@@ -14,7 +14,7 @@ favoritesRouter
     .all(Verify.verifyOrdinaryUser)
 
     .get(function (req, res, next) {
-        var userId = req.decoded._doc._id
+        var userId = req.decoded._id
 
         Favorites.find({ postedBy: userId })
             .populate('postedBy dishes')
@@ -25,7 +25,7 @@ favoritesRouter
     })
 
     .post(function (req, res, next) {
-        var userId = req.decoded._doc._id
+        var userId = req.decoded._id
         var dishId = req.body._id
 
         Favorites.update({ postedBy: userId },
@@ -38,7 +38,7 @@ favoritesRouter
     })
 
     .delete(function (req, res, next) {
-        var userId = req.decoded._doc._id
+        var userId = req.decoded._id
 
         Favorites.remove({ postedBy: userId }, function (err, resp) {
             if (err) next(err)
