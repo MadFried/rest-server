@@ -13,15 +13,7 @@
 
 
 	dishRouter.route('/')
-	.get(function(req,res,next) {
-
-		Dishes.find(req.query)
-			.populate('comments.postedBy')
-			.exec(function (err, dish) {
-			if (err) next(err);
-			res.json(dish);
-		});
-	})
+	.get(findAllDishes)
 
 	.post(Verify.verifyOrdinaryUser, Verify.verifyAdmin, function(req,res,next) {
 		Dishes.create(req.body, function (err,dish) {
@@ -43,6 +35,16 @@
 			res.json(resp);
 		});
 	});
+
+	function findAllDishes(req,res,next) {
+
+		Dishes.find(req.query)
+			.populate('comments.postedBy')
+			.exec(function (err, dish) {
+				if (err) next(err);
+				res.json(dish);
+			});
+	}
 
 	dishRouter.route('/:dishId')
 	.get(function(req, res, next) {

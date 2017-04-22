@@ -11,7 +11,7 @@
 
 
 	promoRouter.route('/')
-	.get(Verify.verifyOrdinaryUser, function(req,res,next) {
+	.get(function(req,res,next) {
 		Promos.find({}, function (err, promo) {
 			if (err) throw err;
 			res.json(promo);

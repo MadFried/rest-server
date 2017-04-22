@@ -18,9 +18,9 @@ favoritesRouter
 
         Favorites.find({ postedBy: userId })
             .populate('postedBy dishes')
-            .exec(function (err, dish) {
+            .exec(function (err, data) {
                 if (err) return next(err)
-                res.json(dish)
+                res.json(data)
             })
     })
 
@@ -48,6 +48,7 @@ favoritesRouter
 
 favoritesRouter
     .route('/:dishId')
+
 
     .delete(Verify.verifyOrdinaryUser, function (req, res, next) {
         var dishId = req.params.dishId

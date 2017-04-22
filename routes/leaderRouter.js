@@ -1,13 +1,24 @@
 	var express = require('express');
 	var bodyParser = require('body-parser');
+	var mongoose = require('mongoose');
+
+	var Verify = require('./verify');
+	var Leaders = require('../models/leadership');
+
 	var leaderRouter = express.Router();
+
+
 
 	leaderRouter.use(bodyParser.json());
 
 
 	leaderRouter.route('/')
 	.get(function(req,res,next) {
-		res.end('sending all leaders names to you!')
+		Leaders.find(req.query)
+			.exec(function (err, leader) {
+				if (err) next(err);
+				res.json(leader);
+			});
 	})
 
 	.post(function(req,res,next) {
@@ -21,7 +32,12 @@
 
 	leaderRouter.route('/:leaderId')
 	.get(function(req, res, next) {
-		res.end('sending:' + req.params.leaderId + '')
+		Leaders.findById(req.params.leaderId)
+			.exec(function (err, leader) {
+				if(err) next(err);
+
+				res.json(leader);
+			});
 	})
 
 	.put(function(req, res, next) {
