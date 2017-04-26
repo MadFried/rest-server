@@ -25,7 +25,7 @@ var commentSchema = new Schema({
 });
 
 // create a schema
-var dishSchema = new Schema({
+var workSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -46,10 +46,10 @@ var dishSchema = new Schema({
         type: String,
         default: ''
     },
-    price: {
-        type: Currency,
-        required: true
-    },
+    // price: {
+    //     type: Currency,
+    //     required: true
+    // },
     description: {
         type: String,
         required: true
@@ -65,7 +65,7 @@ var dishSchema = new Schema({
 
 // the schema is useless so far
 // we need to create a model using it
-var Dishes = mongoose.model('Dish', dishSchema);
+var Works = mongoose.model('Work', workSchema);
 
 // make this available to our Node applications
-module.exports = Dishes;
+module.exports = Works;

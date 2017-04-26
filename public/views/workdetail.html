@@ -5,19 +5,19 @@
                <ul class="breadcrumb">
                    <li><a href="index.html">Home</a></li>
                    <li><a href="index.html#/menu">Menu</a></li>
-                   <li class="active">Dish Details</li>
+                   <li class="active">Work Details</li>
                </ul>
             </div>
             <div class="col-xs-12">
-               <h3>Dish Details</h3>
+               <h3>Work Details</h3>
                <hr>
             </div>
         </div>
         <div class="row row-content">
-            <div class="col-xs-12" ng-if="!showDish">
+            <div class="col-xs-12" ng-if="!showWork">
                 <h3>{{message}}</h3>
             </div>
-            <div class="col-xs-12" ng-if="showDish">
+            <div class="col-xs-12" ng-if="showWork">
                 <button class="btn btn-xs btn-primary pull-right"
                     type="button" ui-sref="app.menu">
                     Back to Menu
@@ -25,15 +25,15 @@
                 <div class="media">
                     <div class="media-left media-middle">
                         <a href="#">
-                        <img class="media-object img-thumbnail" 
-                        ng-src={{dish.image}} alt="Uthappizza">
+                        <img
+                        ng-src={{work.image}} style="width:100%;height:100%;" alt="">
                         </a>
                     </div>
                     <div class="media-body">
-                        <h2 class="media-heading">{{dish.name}} 
-                        <span class="label label-danger">{{dish.label}}</span> 
-                        <span class="badge">{{dish.price/100 | currency}}</span></h2>
-                        <p>{{dish.description}}</p>
+                        <h2 class="media-heading">{{work.name}} </h2>
+                        <!--<span class="label label-danger">{{work.label}}</span> -->
+                        <!--<span class="badge">{{dish.price/100 | currency}}</span></h2>-->
+                        <p>{{work.description}}</p>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                             <input type="text" ng-model="orderText"></p>   
                        </small></h4>
                     <ul class="list-unstyled">
-                        <li ng-repeat="comment in dish.comments | orderBy:orderText">
+                        <li ng-repeat="comment in work.comments | orderBy:orderText">
                           <blockquote>
                              <p>{{comment.rating}} Stars</p>
                              <p>{{comment.comment}}</p>

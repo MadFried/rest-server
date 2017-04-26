@@ -4,116 +4,116 @@
 	var mongoose = require('mongoose');
 	var Verify = require('./verify');
 
-	var Dishes = require('../models/dishes');
+	var Works = require('../models/works');
 
-	var dishRouter = express.Router();
-
-
-	dishRouter.use(bodyParser.json());
+	var workRouter = express.Router();
 
 
-	dishRouter.route('/')
-	.get(findAllDishes)
+	workRouter.use(bodyParser.json());
+
+
+	workRouter.route('/')
+	.get(findAllWorks)
 
 	.post(Verify.verifyOrdinaryUser, Verify.verifyAdmin, function(req,res,next) {
-		Dishes.create(req.body, function (err,dish) {
+		Works.create(req.body, function (err,work) {
 			if(err) throw err;
 
-			console.log('Dish created!');
-			var id = dish._id;
+			console.log('work created!');
+			var id = work._id;
 			res.writeHead(200, {
 				'Content-Type' : 'text/plain'
 			});
 
-			res.end('Added the dish with id:' + id);
+			res.end('Added the work with id:' + id);
 		});
 	})
 
 	.delete(Verify.verifyOrdinaryUser, Verify.verifyAdmin, function(req, res, next) {
-		Dishes.remove({}, function (err, resp) {
+		Works.remove({}, function (err, resp) {
 			if(err) throw err;
 			res.json(resp);
 		});
 	});
 
-	function findAllDishes(req,res,next) {
+	function findAllWorks(req,res,next) {
 
-		Dishes.find(req.query)
+		Works.find(req.query)
 			.populate('comments.postedBy')
-			.exec(function (err, dish) {
+			.exec(function (err, work) {
 				if (err) next(err);
-				res.json(dish);
+				res.json(work);
 			});
 	}
 
-	dishRouter.route('/:dishId')
+	workRouter.route('/:workId')
 	.get(function(req, res, next) {
-		Dishes.findById(req.params.dishId)
+		Works.findById(req.params.workId)
 			.populate('comments.postedBy')
-			.exec(function (err, dish) {
+			.exec(function (err, work) {
 			if(err) next(err);
 
-			res.json(dish);
+			res.json(work);
 		});
 	})
 
 	.put(Verify.verifyOrdinaryUser, Verify.verifyAdmin, function(req, res, next) {
 
-		Dishes.findByIdAndUpdate(req.params.dishId, {
+		Works.findByIdAndUpdate(req.params.workId, {
 			$set: req.body
 		}, {
 			new: true
-		}, function (err, dish) {
+		}, function (err, work) {
 			if (err) throw err;
-			res.json(dish);
+			res.json(work);
 		});
 	})
 
 	.delete(Verify.verifyOrdinaryUser, Verify.verifyAdmin, function(req, res, next) {
 
-		Dishes.findByIdAndRemove(req.params.dishId, function (err, resp) {
+		Works.findByIdAndRemove(req.params.workId, function (err, resp) {
 			if(err) throw err;
 			res.json(resp);
 		});
 	});
 
-	dishRouter.route('/:dishId/comments')
+	workRouter.route('/:workId/comments')
 		.get(function(req, res, next) {
 
-			Dishes.findById(req.params.dishId)
+			Works.findById(req.params.workId)
 				.populate('comments.postedBy')
-				.exec(function (err, dish) {
+				.exec(function (err, work) {
 				if (err) next(err);
 
-				res.json(dish.comments);
+				res.json(work.comments);
 			});
 
 		})
 
 		.post(Verify.verifyOrdinaryUser, function (req, res, next) {
-			Dishes.findById(req.params.dishId, function (err, dish) {
+			Works.findById(req.params.workId, function (err, work) {
 				if (err) next(err);
 
 				req.body.postedBy = req.decoded._id;
 
-				dish.comments.push(req.body);
-				dish.save(function (err, dish) {
+				work.comments.push(req.body);
+				work.save(function (err, work) {
 					if (err) throw err;
 					console.log('Updated Comments!');
-					res.json(dish);
+					res.json(work);
 				});
 			});
 		})
 
 		.delete(Verify.verifyOrdinaryUser, Verify.verifyAdmin, function (req, res, next) {
 
-			Dishes.findById(req.params.dishId, function (err, dish) {
+			Works.findById(req.params.workId, function (err, work) {
 				if (err) throw err;
 
-				for (var i = (dish.comments.length - 1); i >= 0; i--) {
-					dish.comments.id(dish.comments[i]._id).remove();
+				for (var i = (work.comments.length - 1); i >= 0; i--) {
+					work.comments.id(work.comments[i]._id).remove();
 				}
-				dish.save(function (err, result) {
+				work.save(function (err, result) {
 					if (err) throw err;
 					res.writeHead(200, {
 						'Content-Type': 'text/plain'
@@ -123,45 +123,45 @@
 			});
 		});
 
-	dishRouter.route('/:dishId/comments/:commentId')
+	workRouter.route('/:workId/comments/:commentId')
 
 		.get(Verify.verifyOrdinaryUser, function (req, res, next) {
-			Dishes.findById(req.params.dishId)
+			Works.findById(req.params.workId)
 				.populate('comments.postedBy')
-				.exec(function (err, dish) {
+				.exec(function (err, work) {
 				if (err) throw err;
-				res.json(dish.comments.id(req.params.commentId));
+				res.json(work.comments.id(req.params.commentId));
 			});
 		})
 
 		.put(Verify.verifyOrdinaryUser, function (req, res, next) {
 			// We delete the existing commment and insert the updated
 			// comment as a new comment
-			Dishes.findById(req.params.dishId, function (err, dish) {
+			Works.findById(req.params.workId, function (err, work) {
 				if (err) next(err);
-				dish.comments.id(req.params.commentId).remove();
+				work.comments.id(req.params.commentId).remove();
 
 				req.body.postedBy = req.decoded._id;
 
-				dish.comments.push(req.body);
-				dish.save(function (err, dish) {
+				work.comments.push(req.body);
+				work.save(function (err, work) {
 					if (err) throw err;
 					console.log('Updated Comments!');
-					res.json(dish);
+					res.json(work);
 				});
 			});
 		})
 
 		.delete(Verify.verifyOrdinaryUser, function (req, res, next) {
-			Dishes.findById(req.params.dishId, function (err, dish) {
+			Works.findById(req.params.workId, function (err, work) {
 
-				if(dish.comments.id(req.params.commentId).postedBy != req.decoded._id) {
+				if(work.comments.id(req.params.commentId).postedBy != req.decoded._id) {
 					var err = new Error('U are not authorized to perform this operation!');
 					err.status = 403;
 					return next(err);
 				}
-				dish.comments.id(req.params.commentId).remove();
-				dish.save(function (err, resp) {
+				work.comments.id(req.params.commentId).remove();
+				work.save(function (err, resp) {
 					if (err) next(err);
 					res.json(resp);
 				});
@@ -171,4 +171,4 @@
 
 
 
-	module.exports = dishRouter;
+	module.exports = workRouter;

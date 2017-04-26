@@ -21,7 +21,7 @@ db.once('open', function () {
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var dishRouter = require('./routes/dishRouter');
+var workRouter = require('./routes/workRouter');
 var promoRouter = require('./routes/promoRouter');
 var leaderRouter = require('./routes/leaderRouter');
 var favoriteRouter = require('./routes/favoritesRouter');
@@ -57,7 +57,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/dishes',dishRouter);
+app.use('/works',workRouter);
 app.use('/promotions',promoRouter);
 app.use('/leadership',leaderRouter);
 app.use('/favorites',favoriteRouter);

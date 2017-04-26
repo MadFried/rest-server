@@ -3,7 +3,7 @@ var Schema = mongoose.Schema
 
 var favoriteSchema = new Schema({
     postedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    dishes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dish' }]
+    works: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Work' }]
 })
 
 module.exports = mongoose.model('Favorites', favoriteSchema)
