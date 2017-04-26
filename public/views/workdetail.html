@@ -4,7 +4,7 @@
             <div class="col-xs-12">
                <ul class="breadcrumb">
                    <li><a href="index.html">Home</a></li>
-                   <li><a href="index.html#/menu">Menu</a></li>
+                   <li><a href="index.html#/menu">Art Works</a></li>
                    <li class="active">Work Details</li>
                </ul>
             </div>
@@ -20,13 +20,13 @@
             <div class="col-xs-12" ng-if="showWork">
                 <button class="btn btn-xs btn-primary pull-right"
                     type="button" ui-sref="app.menu">
-                    Back to Menu
+                    Back to Index
                 </button> 
                 <div class="media">
                     <div class="media-left media-middle">
                         <a href="#">
                         <img
-                        ng-src={{work.image}} style="width:100%;height:100%;" alt="">
+                        ng-src={{work.image}} height="800px" width="600px" alt="">
                         </a>
                     </div>
                     <div class="media-body">
